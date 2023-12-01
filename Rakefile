@@ -48,7 +48,7 @@ namespace :download do
     puts "⬇️ Download day #{number} input"
 
     response = Net::HTTP.get_response(
-      URI("https://adventofcode.com/2022/day/#{number}/input"),
+      URI("https://adventofcode.com/2023/day/#{number}/input"),
       { 'Cookie' => "session=#{File.read(session_path)}" }
     )
 

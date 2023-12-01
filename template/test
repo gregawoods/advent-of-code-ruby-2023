@@ -1,4 +1,5 @@
 require 'minitest/autorun'
+require 'minitest/pride'
 require_relative '../app'
 
 class TestDay{DAY_NUMBER} < Minitest::Test
