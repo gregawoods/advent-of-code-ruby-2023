@@ -43,7 +43,10 @@ namespace :download do
 
   def download_input(number)
     session_path = File.join(APP_ROOT, '.session')
-    return '' unless File.exist?(session_path)
+
+    unless File.exist?(session_path)
+      raise 'Copy your session cookie from a logged-in browser and save it to a file at `.session`!'
+    end
 
     puts "⬇️ Download day #{number} input"
 

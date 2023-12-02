@@ -24,4 +24,10 @@ rake test
 
 # run a specific test
 ruby ./test/07_test.rb
+
+# scaffold a day
+rake scaffold:1
+
+# download test input
+rake download:1
 ```
