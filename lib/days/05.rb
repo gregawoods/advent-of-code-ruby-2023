@@ -70,7 +70,7 @@ class Day05
     end
 
     # Passes test but is too slow for real input
-    # results.values.min
+    results.values.min
   end
 
 end

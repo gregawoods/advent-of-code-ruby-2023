@@ -70,6 +70,18 @@ namespace :download do
   end
 end
 
+namespace :bench do
+  (1..25).each do |day|
+    namespace day.to_s.to_sym do
+      2.times do |part|
+        task (part + 1).to_s.to_sym do
+          Aoc::Bench.new.call(day, part + 1)
+        end
+      end
+    end
+  end
+end
+
 Rake::TestTask.new do |t|
   t.pattern = 'test/*_test.rb'
 end
