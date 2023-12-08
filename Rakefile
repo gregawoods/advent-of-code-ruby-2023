@@ -5,6 +5,7 @@ require 'net/http'
 namespace :solve do
 
   task :all do
+    ENV['SKIP_LONG_RUNNING_SOLUTIONS'] = '1'
     runner = Aoc::Runner.new
     (1..25).each { |i| runner.call(i) }
   end

@@ -52,25 +52,48 @@ class Day05
   end
 
   def part2(input)
+    # Obviously forking is not the "correct" solution to this puzzle, but sometimes
+    # CPUs are faster than brains, and a star is a star. Maybe refactor later. 🙃
+
+    return -1 if ENV['SKIP_LONG_RUNNING_SOLUTIONS']
+
     seeds, mappings = parse(input)
-    results = {}
+
+    reads = []
+    writes = []
 
     seeds.each_slice(2) do |index, stride|
-      stride.times do |n|
-        key = index + n
-        next if results.key?(key)
+      read, write = IO.pipe
+      reads << read
+      writes << write
 
-        seed = index + n
-        mappings.each do |mapping|
-          seed = mapping.value(seed)
+      fork do
+        # pid = Process.pid
+        # puts "BEGIN #{pid}: #{index} => #{stride}"
+        result = Float::INFINITY
+
+        stride.times do |n|
+          # puts "#{pid}: #{n}/#{stride} (#{(n.to_f / stride * 100).round(1)}%)" if (n % 500_000).zero?
+
+          seed = index + n
+          mappings.each do |mapping|
+            seed = mapping.value(seed)
+          end
+          result = [seed, result].min
         end
 
-        results[key] = seed
+        Marshal.dump(result, write)
+        write.close
+
+        # puts "END #{pid}: #{index} => #{stride} (Result: #{result})"
       end
     end
+    Process.waitall
 
-    # Passes test but is too slow for real input
-    results.values.min
+    writes.each(&:close)
+    results = reads.map { |p| Marshal.load(p.read) } # rubocop:disable Security/MarshalLoad
+
+    results.min
   end
 
 end
