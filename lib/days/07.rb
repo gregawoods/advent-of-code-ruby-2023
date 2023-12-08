@@ -72,9 +72,7 @@ class Day07
     end
 
     def card_value
-      cards.chars.map do |c|
-        CARD_VALUES_2.index(c).to_s.rjust(2, '0')
-      end.join
+      cards.chars.map { |c| CARD_VALUES.index(c).to_s.rjust(2, '0') }.join
     end
 
     def value
