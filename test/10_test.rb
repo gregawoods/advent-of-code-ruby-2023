@@ -15,7 +15,14 @@ class TestDay10 < Minitest::Test
     assert_equal @day.part1(data_b), 8
   end
 
-  # def test_part2
-  #   assert_equal @day.part2(@data), ''
-  # end
+  def test_part2
+    data_c = File.read(File.join(APP_ROOT, 'examples', '10_c.txt')).rstrip
+    assert_equal @day.part2(data_c), 4
+
+    data_d = File.read(File.join(APP_ROOT, 'examples', '10_d.txt')).rstrip
+    assert_equal @day.part2(data_d), 4
+
+    data_e = File.read(File.join(APP_ROOT, 'examples', '10_e.txt')).rstrip
+    assert_equal @day.part2(data_e), 10
+  end
 end

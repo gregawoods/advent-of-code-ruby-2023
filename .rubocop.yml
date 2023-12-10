@@ -282,3 +282,5 @@ Style/NumericLiterals:
   Enabled: false
 Style/MutableConstant:
   Enabled: false
+Naming/MethodParameterName:
+  Enabled: false
