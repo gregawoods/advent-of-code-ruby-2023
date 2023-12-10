@@ -280,3 +280,5 @@ Style/OpenStructUse: # new in 1.23
   Enabled: false
 Style/NumericLiterals:
   Enabled: false
+Style/MutableConstant:
+  Enabled: false
