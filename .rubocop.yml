@@ -284,3 +284,7 @@ Style/MutableConstant:
   Enabled: false
 Naming/MethodParameterName:
   Enabled: false
+Style/IfUnlessModifier:
+  Enabled: false
+Style/Next:
+  Enabled: false
