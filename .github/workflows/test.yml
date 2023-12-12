@@ -4,13 +4,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 3.2.2
     - name: Cache gems
-      uses: actions/cache@v1
+      uses: actions/cache@v3
       with:
         path: vendor/bundle
         key: ${{ runner.os }}-rubydeps-${{ hashFiles('Gemfile.lock') }}
