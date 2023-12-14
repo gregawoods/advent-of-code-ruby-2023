@@ -1,3 +1,4 @@
+RubyVM::YJIT.enable
 APP_ROOT = __dir__
 
 require 'debug'

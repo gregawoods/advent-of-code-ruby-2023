@@ -45,7 +45,7 @@ class Day12
     data.join.split(/\.+/).reject(&:empty?).map(&:length)
   end
 
-  def part2(input)
+  def part2(_input)
     'TODO'
   end
 

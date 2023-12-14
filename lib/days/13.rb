@@ -1,36 +1,24 @@
 class Day13
 
   def part1(input)
-    cols = 0
-    rows = 0
-
-    input.split("\n\n").each do |chunk|
-      mirror_column = find_mirror_column(chunk)
-
-      if mirror_column
-        cols += mirror_column + 1
-      else
-        mirror_row = find_mirror_row(chunk)
-        rows += mirror_row + 1
-      end
+    input.split("\n\n").sum do |chunk|
+      find_reflections(chunk).first
     end
-
-    (rows * 100) + cols
   end
 
-  def find_mirror_column(chunk)
+  def find_mirror_columns(chunk)
     rows = chunk.split("\n")
 
-    mirror_column = nil
+    mirror_columns = []
 
-    (0..(rows.first.length - 2)).each do |n|
+    (1..(rows.first.length - 1)).each do |n|
       is_mirror = true
 
       (0..(rows.length - 1)).each do |i|
         row = rows[i]
 
-        left = row[0..n]
-        right = row[(n + 1), left.length]
+        left = row[0, n]
+        right = row[n, left.length]
 
         if left.length > right.length
           left = left[(left.length - right.length)..]
@@ -43,27 +31,26 @@ class Day13
       end
 
       if is_mirror
-        mirror_column = n
-        break
+        mirror_columns << n
       end
     end
 
-    mirror_column
+    mirror_columns
   end
 
-  def find_mirror_row(chunk)
+  def find_mirror_rows(chunk)
     rows = chunk.split("\n")
 
-    mirror_row = nil
+    mirror_rows = []
 
-    (0..(rows.length - 2)).each do |n|
+    (1..(rows.length - 1)).each do |n|
       is_mirror = true
 
       (0..(rows[n].length - 1)).each do |i|
         column = rows.map { |r| r[i] }.join
 
-        top = column[0..n]
-        bottom = column[(n + 1), top.length]
+        top = column[0, n]
+        bottom = column[n, top.length]
 
         if top.length > bottom.length
           top = top[(top.length - bottom.length)..]
@@ -76,16 +63,32 @@ class Day13
       end
 
       if is_mirror
-        mirror_row = n
-        break
+        mirror_rows << (n * 100)
       end
     end
 
-    mirror_row
+    mirror_rows
+  end
+
+  def find_reflections(chunk)
+    find_mirror_columns(chunk) + find_mirror_rows(chunk)
   end
 
   def part2(input)
-    'TODO'
+    input.split("\n\n").sum do |chunk|
+      original_reflection = find_reflections(chunk).first
+
+      chunk.length.times do |i|
+        next if chunk[i] == "\n"
+
+        new_chunk = chunk.dup
+        new_chunk[i] = new_chunk[i] == '.' ? '#' : '.'
+
+        reflection = find_reflections(new_chunk).find { |r| r != original_reflection }
+
+        break reflection if reflection
+      end
+    end
   end
 
 end

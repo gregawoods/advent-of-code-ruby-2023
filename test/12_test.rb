@@ -13,6 +13,6 @@ class TestDay12 < Minitest::Test
   end
 
   def test_part2
-    assert_equal @day.part2(@data), ''
+    assert_equal @day.part2(@data), 'TODO'
   end
 end
