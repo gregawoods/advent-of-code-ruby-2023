@@ -75,7 +75,7 @@ Style/ExponentialNotation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 Style/GuardClause:
-  MinBodyLength: 3
+  Enabled: false
 Style/HashEachMethods:
   Enabled: true
 Style/HashTransformKeys:
