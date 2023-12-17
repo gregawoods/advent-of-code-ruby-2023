@@ -1,28 +1,26 @@
 class Day14
 
-  def part1(input)
+  def parse(input)
     lines = input.split("\n")
 
-    columns = []
+    grid = []
 
     lines.length.times do |n|
       lines[n].chars.each_with_index do |char, i|
-        columns[i] ||= []
-        columns[i] << char
+        grid[i] ||= []
+        grid[i] << char
       end
     end
 
-    columns = columns.map do |c|
-      shift_column(c)
-    end
+    grid
+  end
 
+  def calculate(grid)
     value = 0
 
-    columns.each do |col|
+    grid.each do |col|
       col.each_with_index do |obj, index|
-        if obj == 'O'
-          value += (col.length - index)
-        end
+        value += (col.length - index) if obj == 'O'
       end
     end
 
@@ -30,34 +28,85 @@ class Day14
   end
 
   def shift_column(column)
+    new_column = column
+
     column.length.times do |n|
       next if n.zero?
 
       n.times do |i|
         position = n - i
 
-        char = column[position]
-        prev_char = column[position - 1]
+        char = new_column[position]
+        prev_char = new_column[position - 1]
 
         if char == 'O' && prev_char == '.'
-          column[position] = '.'
-          column[position - 1] = 'O'
+          new_column[position] = '.'
+          new_column[position - 1] = 'O'
         else
           break
         end
       end
     end
 
-    column
+    new_column
   end
 
-  def rotate_clockwise(columns)
-    new_columns = []
+  def shift_grid(grid)
+    grid.map do |column|
+      shift_column(column)
+    end
+  end
 
+  def rotate_clockwise(grid)
+    new_grid = []
+
+    grid.each do |column|
+      column.reverse.each_with_index do |item, index|
+        new_grid[index] ||= []
+        new_grid[index] << item
+      end
+    end
+
+    new_grid
+  end
+
+  def print_grid(grid)
+    grid.first.length.times do |y|
+      grid.length.times do |x|
+        print grid[x][y]
+      end
+      print "\n"
+    end
+  end
+
+  def part1(input)
+    calculate(shift_grid(parse(input)))
   end
 
   def part2(input)
-    'TODO'
+    grid = parse(input)
+
+    history = [grid.dup]
+
+    iterations = 1_000_000_000
+
+    iterations.times do |i|
+      4.times do
+        grid = rotate_clockwise(shift_grid(grid))
+      end
+
+      if history.include?(grid)
+        loop_start_idx = history.index(grid)
+        the_loop = history[loop_start_idx..]
+        idx = ((iterations - i) % the_loop.length) - 1
+
+        return calculate(the_loop[idx])
+      end
+
+      history << grid.map(&:dup)
+    end
+
+    raise 'Should not get this far!'
   end
 
 end
