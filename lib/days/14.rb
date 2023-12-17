@@ -70,15 +70,6 @@ class Day14
     new_grid
   end
 
-  def print_grid(grid)
-    grid.first.length.times do |y|
-      grid.length.times do |x|
-        print grid[x][y]
-      end
-      print "\n"
-    end
-  end
-
   def part1(input)
     calculate(shift_grid(parse(input)))
   end
