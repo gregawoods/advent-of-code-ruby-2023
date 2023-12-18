@@ -11,13 +11,13 @@ class Day18
         Point.new(x + 1, y),
         Point.new(x, y - 1),
         Point.new(x, y + 1)
-      ].reject { |p| p.x.negative? || p.y.negative? }
+      ]
     end
   end
 
   GridInfo = Data.define(:min_x, :max_x, :min_y, :max_y) do
     def valid?(x, y)
-      x >= min_x && x <= max_x && y >= min_y && y < max_y
+      x >= min_x && x <= max_x && y >= min_y && y <= max_y
     end
 
     def size
@@ -82,19 +82,38 @@ class Day18
       end
     end
 
-    outside.to_a.each do |point|
-      check_neighbors(point, trench, outside, info)
+    points_to_check = outside.map(&:neighbors).flatten.uniq
+
+    loop do
+      new_points_to_check = []
+
+      points_to_check.each do |p|
+        if !trench.include?(p) && !outside.include?(p) && info.valid?(p.x, p.y)
+          outside.add(p)
+          new_points_to_check += p.neighbors
+        end
+      end
+
+      points_to_check = new_points_to_check
+
+      break if points_to_check.empty?
     end
 
     info.size - outside.size
   end
 
-  def check_neighbors(point, trench, outside, info)
-    point.neighbors.each do |p|
-      next if trench.include?(p) || outside.include?(p) || !info.valid?(p.x, p.y)
-
-      outside.add(p)
-      check_neighbors(p, trench, outside, info)
+  def draw_grid(info, trench, outside)
+    (info.min_x..info.max_x).each do |x|
+      (info.min_y..info.max_y).each do |y|
+        if trench.include?(Point.new(x, y))
+          print '#'.red
+        elsif outside.include?(Point.new(x, y))
+          print 'O'.blue
+        else
+          print '.'
+        end
+      end
+      print "\n"
     end
   end
 
