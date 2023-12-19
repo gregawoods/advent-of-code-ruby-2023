@@ -13,7 +13,7 @@ class Day16
     left: [-1, 0]
   }
 
-  Beam = Struct.new(:x, :y, :dir) do
+  Beam = Data.define(:x, :y, :dir) do
     def move(dir)
       mv = MOVEMENTS[dir]
       Beam.new(x + mv[0], y + mv[1], dir)
