@@ -26,11 +26,31 @@ class Day16
 
   def part1(input)
     grid = parse_grid(input)
-    visited = Set.new
 
-    beams = [
-      Beam.new(0, 0, :right)
-    ]
+    solve(grid, Beam.new(0, 0, :right))
+  end
+
+  def part2(input)
+    grid = parse_grid(input)
+
+    values = []
+
+    grid.length.times do |x|
+      values << solve(grid, Beam.new(x, 0, :down))
+      values << solve(grid, Beam.new(x, grid.first.length - 1, :up))
+    end
+
+    grid.first.length.times do |y|
+      values << solve(grid, Beam.new(0, y, :right))
+      values << solve(grid, Beam.new(grid.length - 1, y, :right))
+    end
+
+    values.max
+  end
+
+  def solve(grid, initial)
+    visited = Set.new
+    beams = [initial]
 
     loop do
       new_beams = []
@@ -39,11 +59,10 @@ class Day16
         if beam.x.negative? ||
            beam.x >= grid.length ||
            beam.y.negative? ||
-           beam.y >= grid.first.length
+           beam.y >= grid.first.length ||
+           visited.include?(beam)
           next
         end
-
-        next if visited.include?(beam)
 
         visited.add(beam)
 
@@ -95,10 +114,6 @@ class Day16
     end
 
     visited.map(&:pos).uniq.length
-  end
-
-  def part2(input)
-    'TODO'
   end
 
 end
